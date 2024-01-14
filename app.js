@@ -7,6 +7,7 @@ app.use(express.json());
 
 const API_KEY = process.env.API_KEY;
 const API_BASE_URL = 'https://plx-hiring-api.fly.dev/api';
+const db = require('./util/firestore');
 
 // Endpoint to get a quote
 app.post('/api/quote', async (req, res) => {
@@ -29,6 +30,17 @@ app.post('/api/orders', async (req, res) => {
         }, {
             headers: { "X-Api-Key": API_KEY, "Content-Type": "application/json" }
         });
+
+        if (!response.data) {
+          res.status(500).send('No data returned from API');
+          return;
+        }
+
+        // Save the order to Firestore
+        const orderData = response.data;
+        const orderRef = db.collection('orders').doc();
+        await orderRef.set(orderData);
+
         res.json(response.data);
     } catch (error) {
         res.status(500).send(error.toString());
