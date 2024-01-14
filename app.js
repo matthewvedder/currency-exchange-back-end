@@ -7,7 +7,7 @@ app.use(express.json());
 
 const API_KEY = process.env.API_KEY;
 const API_BASE_URL = 'https://plx-hiring-api.fly.dev/api';
-const db = require('./util/firestore');
+const db = require('./services/firestore');
 
 // Endpoint to get a quote
 app.post('/api/quote', async (req, res) => {

@@ -6,6 +6,20 @@ const app = require('./app'); // Import your Express app
 // Mocking Axios
 const mock = new MockAdapter(axios);
 
+// Mock firebase-admin and Firestore
+jest.mock('firebase-admin', () => ({
+  credential: {
+      cert: jest.fn().mockReturnValue({}),
+  },
+  initializeApp: jest.fn(),
+  firestore: jest.fn().mockReturnValue({
+      // Mock other Firestore methods as needed
+      collection: jest.fn().mockReturnThis(),
+      doc: jest.fn().mockReturnThis(),
+      set: jest.fn().mockResolvedValue(true),
+  }),
+}));
+
 // Mock data
 const mockQuote = {
   data: {
@@ -58,6 +72,7 @@ describe('Currency Exchange API', () => {
       user_id: "user-id",
       from_amount: "1"
     });
+
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(mockOrder);
   });
