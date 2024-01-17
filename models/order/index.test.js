@@ -34,7 +34,7 @@ describe('getOrderById', () => {
     const order = await getOrderById(orderId);
 
     expect(admin.firestore().collection).toHaveBeenCalledWith('orders');
-    expect(admin.firestore().where).toHaveBeenCalledWith('order_id', '==', orderId);
+    expect(admin.firestore().where).toHaveBeenCalledWith('id', '==', orderId);
     expect(admin.firestore().limit).toHaveBeenCalledWith(1);
     expect(order.data()).toEqual({
       order_id: orderId

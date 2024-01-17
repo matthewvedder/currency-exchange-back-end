@@ -20,6 +20,20 @@ jest.mock('firebase-admin', () => ({
   }),
 }));
 
+const { Worker } = require('worker_threads');
+// Mock the Worker class from worker_threads
+jest.mock('worker_threads', () => {
+  return {
+    Worker: jest.fn().mockImplementation(() => {
+      return {
+        postMessage: jest.fn(),
+        on: jest.fn(),
+        terminate: jest.fn()
+      };
+    })
+  };
+});
+
 // Mock data
 const mockQuote = {
   data: {
