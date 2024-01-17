@@ -70,11 +70,6 @@ To run the test suite, execute:
 ```bash
 npm test
 ```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system.
-
 ## License
 
 This project is licensed under the [MIT License](LICENSE.md) - see the file for details.
