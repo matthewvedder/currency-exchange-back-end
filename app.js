@@ -3,6 +3,8 @@ const cors = require('cors');
 const axios = require('axios');
 require('dotenv').config();
 
+const { Worker } = require('worker_threads');
+
 const app = express();
 app.use(express.json());
 
@@ -53,20 +55,10 @@ app.post('/api/orders', async (req, res) => {
       }
       const orderRef = db.collection('orders').doc();
       await orderRef.set(orderData);
+      // Kick off worker to poll for order status
+      const worker = new Worker('./workers/order-status/index.js');
+      worker.postMessage(response.data.data.id);
 
-      res.json(response.data);
-  } catch (error) {
-      res.status(500).send(error.toString());
-  }
-});
-
-// Endpoint to get historical orders for a user
-app.get('/api/users/:userId/orders', async (req, res) => {
-  try {
-      const { userId } = req.params;
-      const response = await axios.get(`${API_BASE_URL}/users/${userId}/orders`, {
-          headers: { "X-Api-Key": API_KEY }
-      });
       res.json(response.data);
   } catch (error) {
       res.status(500).send(error.toString());

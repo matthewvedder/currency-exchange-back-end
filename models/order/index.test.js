@@ -1,7 +1,7 @@
 // Mock firebase-admin and Firestore
 jest.mock('firebase-admin', () => ({
   credential: {
-      cert: jest.fn().mockReturnValue({}),
+    cert: jest.fn().mockReturnValue({}),
   },
   initializeApp: jest.fn(),
   firestore: jest.fn().mockReturnValue({
@@ -36,7 +36,7 @@ describe('getOrderById', () => {
     expect(admin.firestore().collection).toHaveBeenCalledWith('orders');
     expect(admin.firestore().where).toHaveBeenCalledWith('order_id', '==', orderId);
     expect(admin.firestore().limit).toHaveBeenCalledWith(1);
-    expect(order).toEqual({
+    expect(order.data()).toEqual({
       order_id: orderId
     });
   });

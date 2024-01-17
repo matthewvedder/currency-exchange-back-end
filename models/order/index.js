@@ -3,7 +3,7 @@ const db = require('../../services/firestore');
 const getOrderById = async (orderId) => {
   try {
     const ordersRef = db.collection('orders');
-    const snapshot = await ordersRef.where('order_id', '==', orderId).limit(1).get();
+    const snapshot = await ordersRef.where('id', '==', orderId).limit(1).get()
 
     if (snapshot.empty) {
       return null;
@@ -11,7 +11,7 @@ const getOrderById = async (orderId) => {
 
     // Assuming order_id is unique, there should be only one document
     const doc = snapshot.docs[0]
-    return doc.data();
+    return doc
   } catch (error) {
     console.error('Error getting document:', error);
   }
